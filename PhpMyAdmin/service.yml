@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: phpmyadmin-service
 spec:
-  typr: LoadBalancer
+  type: LoadBalancer
   selector:
     app: mysql
   ports:
