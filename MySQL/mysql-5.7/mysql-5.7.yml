@@ -42,7 +42,7 @@ spec:
           volumeMounts:
             - mountPath: "/var/lib/mysql"
               subPath: "mysql"
-              name: mysql_data
+              name: mysql-data
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -50,7 +50,7 @@ spec:
                   name: mysql-secrets
                   key: ROOT_PASSWORD
       volumes:
-        - name: mysql_data
+        - name: mysql-data
           persistentVolumeClaim:
             claimName: mysql-data-disk
 ---
