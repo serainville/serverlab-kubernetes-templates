@@ -16,13 +16,17 @@ spec:
         app: phpmyadmin
     spec:
       containers:
-        - name: mysql
+        - name: phpmyadmin
           image: phpmyadmin/phpmyadmin
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
+            - name: PMA_HOST
+              value: mysql-service
+            - name: PMA_PORT
+              value: "3306"
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secrets
-                  key: ROOT_PASSWORD
+                  key: root-password
