@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic-unsecure-ingress
+  annotations:
+    # Enable client certificate authentication
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    # Create the secret containing the trusted ca certificates
+    nginx.ingress.kubernetes.io/auth-tls-secret: "default/ingress-tls-secret"
+    # Specify the verification depth in the client certificates chain
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+spec:
+  backend:
+    serviceName: phpmyadmin-service
+    servicePort: 80
+  tls:
+  - hosts:
+    - phpmyadmin.serverlab.ca
+    secretName: ingress-tls-secret

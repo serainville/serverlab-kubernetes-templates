@@ -4,10 +4,10 @@ kind: Service
 metadata:
   name: phpmyadmin-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
-    app: mysql
+    app: phpmyadmin
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 80
+    targetPort: 80

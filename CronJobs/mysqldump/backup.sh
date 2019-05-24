@@ -8,7 +8,7 @@ DB_NAME=${DB_NAME:-${MYSQL_ENV_DB_NAME}}
 DB_HOST=${DB_HOST:-${MYSQL_ENV_DB_HOST}}
 ALL_DATABASES=${ALL_DATABASES}
 IGNORE_DATABASE=${IGNORE_DATABASE}
-GS_STORAGE_BUCKET=${BACKUP_STORAGE_BUCKET}
+GS_BUCKET=${BACKUP_STORAGE_BUCKET}
 
 if [[ ${DB_USER} == "" ]]; then
 	echo "Missing DB_USER env variable"
@@ -24,7 +24,7 @@ if [[ ${DB_HOST} == "" ]]; then
 fi
 
 if [[ ${GS_STORAGE_BUCKET} == "" ]]; then
-    echo "Missing GS_STORAGE_BUCKET env variable"
+    echo "Missing GS_BUCKET env variable"
     exit 1
 fi
 
@@ -34,14 +34,14 @@ if [[ ${ALL_DATABASES} == "" ]]; then
 		exit 1
 	fi
 	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" "$@" "${DB_NAME}" > /mysqldump/"${DB_NAME}".sql
-    gsutil cp /mysqldump/"${DB_NAME}".sql ${GS_STORAGE_BUCKET}
+    gsutil cp /mysqldump/"${DB_NAME}".sql ${GS_BUCKET}
 else
 	databases=`mysql --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
 for db in $databases; do
     if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] && [[ "$db" != "$IGNORE_DATABASE" ]]; then
         echo "Dumping database: $db"
         mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" --databases $db > /mysqldump/$db.sql
-        gsutil cp /mysqldump/$db.sql ${GS_STORAGE_BUCKET}
+        gsutil cp /mysqldump/$db.sql ${GS_BUCKET}
     fi
 done
 fi

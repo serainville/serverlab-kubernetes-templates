@@ -1,7 +1,7 @@
 FROM google/cloud-sdk:alpine
 
-ENV GOOGLE_PROJECT 
-ENV GOOGLE_CLIENT_EMAIL 
+ENV GOOGLE_PROJECT serverlab
+ENV GOOGLE_CLIENT_EMAIL shane.rainville@gmail.com
 ENV DB_USER \
     DB_PASS \   
     DB_NAME  \
